@@ -1,0 +1,9 @@
+pandas
+geopandas
+streamlit
+matplotlib
+plotly
+altair
+sqlalchemy
+psycopg2-binary
+python-dotenv

@@ -1,5 +1,7 @@
 import os
 import streamlit as st
+from streamlit_keycloak import login
+
 
 # Titulos e fivicon
 st.set_page_config(page_title="Systen PACS",
@@ -20,8 +22,30 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 with st.sidebar:
-    st.image("https://cdn-icons-png.flaticon.com/512/5523/5523656.png", width=280)
+    st.image("https://dataway.info/wp-content/uploads/2023/02/dtw_lg_500x180-removebg.png", width=280)
     st.divider()                   
 
-st.markdown("# Systen PACS")
+st.markdown("# Dataway")
+
+
+st.title("Keycloak example")
+keycloak = login(
+    url="http://localhost/keycloak/",
+    realm="orthanc",
+    client_id="orthanc",
+    auto_refresh=True,
+    init_options={"checkLoginIframe": False},
+    custom_labels={
+        "labelButton": "Sign in",
+        "labelLogin": "Please sign in to your account.",
+        "errorNoPopup": "Unable to open the authentication popup. Allow popups and refresh the page to proceed.",
+        "errorPopupClosed": "Authentication popup was closed manually.",
+        "errorFatal": "Unable to connect to Keycloak using the current configuration."   
+    }
+)
+
+if keycloak.authenticated:
+    st.subheader(f"Welcome {keycloak.user_info['preferred_username']}!")
+    st.write(f"Here is your user information:")
+    st.write(asdict(keycloak))
 
